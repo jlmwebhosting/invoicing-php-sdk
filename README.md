@@ -19,18 +19,18 @@ To use the SDK,
  * Create a service wrapper object
  * Create a request object as per your project's needs. All the API request and response classes are available in *services\Invoice.php*
  * Invoke the appropriate method on the request object.
+
+
+	require_once 'services\InvoiceService.php';
+
+
+	$req = new CreateInvoiceRequest();
+	$req->invoice = $invo;
+	......
+
+	$invc = new InvoiceService();
+	$ret = $invc->CreateInvoice($req);
  
-`
-require_once 'services\InvoiceService.php';
-
-
-$req = new CreateInvoiceRequest();
-$req->invoice = $invo;
-......
-
-$invc = new InvoiceService();
-$ret = $invc->CreateInvoice($req);
-` 
   
  
 

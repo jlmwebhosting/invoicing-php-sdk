@@ -222,7 +222,7 @@ class InvoiceType {
 		}
 		for($i=0; $i<count($this->items);$i++) {
 			$newPrefix = $prefix . "items($i).";
-			$str .= $delim . call_user_func(array($this->items, 'toNVPString'), $newPrefix);
+			$str .= $delim . call_user_func(array($this->items[$i], 'toNVPString'), $newPrefix);
 		 }
 		if( $this->currencyCode != null ) {
 			$str .= $delim .  $prefix . 'currencyCode=' . urlencode($this->currencyCode);

@@ -258,7 +258,7 @@ class PHPGenerator {
 	{
 		$className = $service->validatedName . "Service";
 		
-		$return = "require_once('PPUtils.php');\n";		
+		$return = "require_once('$service->validatedName.php');\nrequire_once('PPUtils.php');\n";		
 		$return .= '/**'."\n";
 		$return .= ' * '.$service->validatedName ." wrapper class\n";
 		$return .= ' * Auto generated code'."\n";
@@ -434,7 +434,7 @@ class PHPGenerator {
 				$nvpDeserializeCode .= "\t\t\t" . 'for($i=0; $i<10;$i++) {'. "\n";
 				if($this->isComplexType($property->class)) {		
 					$nvpSerializeCode .= "\t\t\t". '$newPrefix = $prefix . "' . $property->name . '($i).";' . "\n\t\t\t\$str .= ";
-					$nvpSerializeCode .=  "\$delim . call_user_func(array(\$this->".$property->validatedName . ", 'toNVPString'), \$newPrefix);\n";
+					$nvpSerializeCode .=  "\$delim . call_user_func(array(\$this->".$property->validatedName . "[\$i], 'toNVPString'), \$newPrefix);\n";
 					
 					$nvpDeserializeCode .= "\t\t\t\t" . 'if( PPUtils::array_match_key($map, $prefix."'. $property->name. '($i)") ) {'. "\n";
 					$nvpDeserializeCode .= "\t\t\t\t\t" . '$newPrefix = $prefix."'. $property->name. '($i).";'."\n\t\t\t\t".'$this->'. $property->validatedName. '[$i] = new ' . $property->class . '($map, $newPrefix);'. "\n\t\t\t\t}\n";

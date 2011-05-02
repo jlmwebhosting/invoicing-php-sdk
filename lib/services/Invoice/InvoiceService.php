@@ -1,6 +1,7 @@
 <?php
 
 require_once('PPBaseService.php');
+require_once('Invoice.php');
 require_once('PPUtils.php');
 /**
  * Invoice wrapper class
