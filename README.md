@@ -23,6 +23,8 @@ To use the SDK,
  * Invoke the appropriate method on the request object.
 
 
+For example,
+
 	require_once 'services\InvoiceService.php';
 
 
@@ -41,6 +43,7 @@ SDK Configuration
 
 The SDK uses an INI format configuration file. The default location for this file is config/sdk_config.ini
 You can use the configuration file to configure
+
  * (Multiple) API account credentials.
  * HTTP connection parameters 
  * Service endpoint
