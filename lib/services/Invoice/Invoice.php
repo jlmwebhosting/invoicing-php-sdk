@@ -543,41 +543,36 @@ class InvoiceItemType {
 }
 
 /**
- * CreateInvoiceResponse
+ * FaultMessage
  *  
-  The response object for CreateInvoice.
+  This specifies a fault, encapsulating error
+  data, with specific error codes.
  
  
   */
-class CreateInvoiceResponse {
+class FaultMessage {
 	/**
 	 * @access public
 	 * @var ResponseEnvelope
 	 */
 	public $responseEnvelope;
 	/**
+	 * array
 	 * @access public
-	 * @var string
+	 * @var ErrorData
 	 */
-	public $invoiceID;
-	/**
-	 * @access public
-	 * @var string
-	 */
-	public $invoiceNumber;
+	public $error;
 
 	public function __construct($map = null, $prefix='') {
 		if($map != null) {
 			$newPrefix = $prefix ."responseEnvelope.";
 			$this->responseEnvelope = new ResponseEnvelope($map, $newPrefix);
-			$mapKeyName =  $prefix . 'invoiceID';
-			if($map != null && array_key_exists($mapKeyName, $map)) {
-				$this->invoiceID = $map[$mapKeyName];
-			}
-			$mapKeyName =  $prefix . 'invoiceNumber';
-			if($map != null && array_key_exists($mapKeyName, $map)) {
-				$this->invoiceNumber = $map[$mapKeyName];
-			}
+			for($i=0; $i<10;$i++) {
+				if( PPUtils::array_match_key($map, $prefix."error($i)") ) {
+					$newPrefix = $prefix."error($i).";
+				$this->error[$i] = new ErrorData($map, $newPrefix);
+				}
+			 }
 		}
 	}
 }
@@ -630,6 +625,161 @@ class ResponseEnvelope {
 			if($map != null && array_key_exists($mapKeyName, $map)) {
 				$this->build = $map[$mapKeyName];
 			}
+		}
+	}
+}
+
+/**
+ * ErrorData
+ *  
+  This type contains the detailed error
+  information resulting from the service
+  operation.
+ 
+ 
+  */
+class ErrorData {
+	/**
+	 * @access public
+	 * @var long
+	 */
+	public $errorId;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $domain;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $subdomain;
+	/**
+	 * @access public
+	 * @var ErrorSeverity
+	 */
+	public $severity;
+	/**
+	 * @access public
+	 * @var ErrorCategory
+	 */
+	public $category;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $message;
+	/**
+	 * @access public
+	 * @var token
+	 */
+	public $exceptionId;
+	/**
+	 * array
+	 * @access public
+	 * @var ErrorParameter
+	 */
+	public $parameter;
+
+	public function __construct($map = null, $prefix='') {
+		if($map != null) {
+			$mapKeyName =  $prefix . 'errorId';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->errorId = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'domain';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->domain = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'subdomain';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->subdomain = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'severity';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->severity = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'category';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->category = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'message';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->message = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'exceptionId';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->exceptionId = $map[$mapKeyName];
+			}
+			for($i=0; $i<10;$i++) {
+				if( PPUtils::array_match_key($map, $prefix."parameter($i)") ) {
+					$newPrefix = $prefix."parameter($i).";
+				$this->parameter[$i] = new ErrorParameter($map, $newPrefix);
+				}
+			 }
+		}
+	}
+}
+
+/**
+ * ErrorParameter
+ */
+class ErrorParameter {
+
+	public function __construct($map = null, $prefix='') {
+		if($map != null) {
+		}
+	}
+}
+
+/**
+ * CreateInvoiceResponse
+ *  
+  The response object for CreateInvoice.
+ 
+ 
+  */
+class CreateInvoiceResponse {
+	/**
+	 * @access public
+	 * @var ResponseEnvelope
+	 */
+	public $responseEnvelope;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $invoiceID;
+	/**
+	 * @access public
+	 * @var string
+	 */
+	public $invoiceNumber;
+	/**
+	 * array
+	 * @access public
+	 * @var ErrorData
+	 */
+	public $error;
+
+	public function __construct($map = null, $prefix='') {
+		if($map != null) {
+			$newPrefix = $prefix ."responseEnvelope.";
+			$this->responseEnvelope = new ResponseEnvelope($map, $newPrefix);
+			$mapKeyName =  $prefix . 'invoiceID';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->invoiceID = $map[$mapKeyName];
+			}
+			$mapKeyName =  $prefix . 'invoiceNumber';
+			if($map != null && array_key_exists($mapKeyName, $map)) {
+				$this->invoiceNumber = $map[$mapKeyName];
+			}
+			for($i=0; $i<10;$i++) {
+				if( PPUtils::array_match_key($map, $prefix."error($i)") ) {
+					$newPrefix = $prefix."error($i).";
+				$this->error[$i] = new ErrorData($map, $newPrefix);
+				}
+			 }
 		}
 	}
 }
@@ -694,6 +844,12 @@ class SendInvoiceResponse {
 	 * @var string
 	 */
 	public $invoiceID;
+	/**
+	 * array
+	 * @access public
+	 * @var ErrorData
+	 */
+	public $error;
 
 	public function __construct($map = null, $prefix='') {
 		if($map != null) {
@@ -703,6 +859,12 @@ class SendInvoiceResponse {
 			if($map != null && array_key_exists($mapKeyName, $map)) {
 				$this->invoiceID = $map[$mapKeyName];
 			}
+			for($i=0; $i<10;$i++) {
+				if( PPUtils::array_match_key($map, $prefix."error($i)") ) {
+					$newPrefix = $prefix."error($i).";
+				$this->error[$i] = new ErrorData($map, $newPrefix);
+				}
+			 }
 		}
 	}
 }
@@ -773,6 +935,12 @@ class CreateAndSendInvoiceResponse {
 	 * @var string
 	 */
 	public $invoiceNumber;
+	/**
+	 * array
+	 * @access public
+	 * @var ErrorData
+	 */
+	public $error;
 
 	public function __construct($map = null, $prefix='') {
 		if($map != null) {
@@ -786,6 +954,12 @@ class CreateAndSendInvoiceResponse {
 			if($map != null && array_key_exists($mapKeyName, $map)) {
 				$this->invoiceNumber = $map[$mapKeyName];
 			}
+			for($i=0; $i<10;$i++) {
+				if( PPUtils::array_match_key($map, $prefix."error($i)") ) {
+					$newPrefix = $prefix."error($i).";
+				$this->error[$i] = new ErrorData($map, $newPrefix);
+				}
+			 }
 		}
 	}
 }

@@ -114,6 +114,10 @@
 				<xsl:apply-templates
 					select="//*[local-name()='message' and @name=substring-after(current()/*[local-name()='output']/@message, ':')]" />
 			</returns>
+			<throws>
+				<xsl:apply-templates
+					select="//*[local-name()='message' and @name=substring-after(current()/*[local-name()='fault']/@message, ':')]" />
+			</throws>			
 		</function>
 	</xsl:template>
 

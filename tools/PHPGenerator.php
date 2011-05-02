@@ -34,6 +34,7 @@ class DataType {
 	public $extends;
 	public $doc;
 	public $isOutputType;
+	public $faults = array();
 }
 class PHPGenerator {
 
@@ -80,38 +81,38 @@ class PHPGenerator {
 		
 		if( array_key_exists($type->validatedName, $service->dataTypes )) {
 			$service->dataTypes[$type->validatedName]->isOutputType  |= $isOutputType;
-		} else {
-			$service->dataTypes[$type->validatedName] = $type;
-		}
+		} else {			
+			$service->dataTypes[$type->validatedName] = $type;		
 		
-		$expr = "*/class[@name='$type->name']";		
-		$elements = $this->_xpath->query($expr);
-		if($elements && $elements->length > 0) {			
-
-            $docNode = $elements->item(0)->getElementsByTagName("documentation");
-            if($docNode && $docNode->length > 0)
-                $type->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
-
-			foreach ($elements->item(0)->getElementsByTagName('property') as $prop) {				
-                $p = new Property();
-                $p->name = $prop->getAttribute("name");
-                $p->validatedName = $this->_validateNamingConvention($prop->getAttribute("name"));	
-                $p->maxOccurs = $prop->getAttribute("max");
-                $p->minOccurs = $prop->getAttribute("min");
-                $p->class = $prop->getAttribute("type");
-                $docNode = $prop->getElementsByTagName("documentation");
-                if($docNode && $docNode->length > 0)
-                    $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
-                $type->members[] = $p;					
-
-				if( $this->isComplexType($prop->getAttribute("type")) && !array_key_exists($prop->getAttribute("type"), $service->dataTypes)) {
-                    $d = new DataType();
-                    $d->name = $prop->getAttribute("type");
-                    $d->validatedName = $this->_validateType($prop->getAttribute("type"));	
-                    $d->isOutputType = $isOutputType;
-					$this->discoverTypes($service, $d, $isOutputType);
-                }				
-			}			
+			$expr = "*/class[@name='$type->name']";		
+			$elements = $this->_xpath->query($expr);
+			if($elements && $elements->length > 0) {			
+	
+	            $docNode = $elements->item(0)->getElementsByTagName("documentation");
+	            if($docNode && $docNode->length > 0)
+	                $type->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
+	
+				foreach ($elements->item(0)->getElementsByTagName('property') as $prop) {				
+	                $p = new Property();
+	                $p->name = $prop->getAttribute("name");
+	                $p->validatedName = $this->_validateNamingConvention($prop->getAttribute("name"));	
+	                $p->maxOccurs = $prop->getAttribute("max");
+	                $p->minOccurs = $prop->getAttribute("min");
+	                $p->class = $prop->getAttribute("type");
+	                $docNode = $prop->getElementsByTagName("documentation");
+	                if($docNode && $docNode->length > 0)
+	                    $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
+	                $type->members[$p->name] = $p;					
+	
+					if( $this->isComplexType($prop->getAttribute("type")) && !array_key_exists($prop->getAttribute("type"), $service->dataTypes)) {
+	                    $d = new DataType();
+	                    $d->name = $prop->getAttribute("type");
+	                    $d->validatedName = $this->_validateType($prop->getAttribute("type"));	
+	                    $d->isOutputType = $isOutputType;
+						$this->discoverTypes($service, $d, $isOutputType);
+	                }				
+				}			
+			}
 		}
 	}
 
@@ -144,12 +145,39 @@ class PHPGenerator {
 						$p = new DataType();
 						$p->name = $variable->getAttribute("type");
 						$p->validatedName = $this->_validateType($variable->getAttribute("type"));						
-						$p->isOutputType  = false;
+						$p->isOutputType  = false;						
                         $docNode = $variable->getElementsByTagName("documentation");
                         if($docNode && $docNode->length > 0)
                             $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
 						$o->input[$variable->getAttribute("name")] = $p;
 						$this->discoverTypes($s, $p, false);
+					}
+				}
+				
+				
+				$soapFaults = array();
+				$faults = $function->getElementsByTagName("throws");				
+				if ($faults->length > 0) {
+					$faultList = $faults->item(0)->getElementsByTagName("variable");
+					foreach ($faultList as $variable) {
+						$faultName = $this->_validateNamingConvention($variable->getAttribute("type"));
+						if(array_key_exists($faultName, $s->dataTypes)) {
+							$p = $s->dataTypes[$faultName];
+						} else {					
+							$p = new DataType();
+							$p->name = $variable->getAttribute("type");
+							
+							$p->validatedName = $faultName;						
+							$p->type = $this->_validateType($variable->getAttribute("type"));
+	                        $docNode = $variable->getElementsByTagName("documentation");
+	                        if($docNode && $docNode->length > 0)
+	                            $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
+							$p->isOutputType = true;
+							$this->discoverTypes($s, $p, true);
+						}
+						$o->fault = $p;
+						$soapFaults[$p->type] = $p;	
+						
 					}
 				}
 				
@@ -161,32 +189,16 @@ class PHPGenerator {
 						$p = new DataType();
 						$p->name = $variable->getAttribute("type");
 						$p->validatedName = $this->_validateNamingConvention($variable->getAttribute("type"));						
-						$p->isOutputType  = true;
-                        $docNode = $variable->getElementsByTagName("documentation");
-                        if($docNode && $docNode->length > 0)
-                            $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
-						$o->output = $p;
-						$this->discoverTypes($s, $p, true);
-					}
-				}
-				
-				$faults = $function->getElementsByTagName("faults");
-				if ($faults->length > 0) {
-					$faultList = $faults->item(0)->getElementsByTagName("variable");
-					foreach ($faultList as $variable) {
+						$p->isOutputType  = true;						
+						$p->faults = array_unique($soapFaults);
 						
-						$p = new DataType();
-						$p->name = $variable->getAttribute("name");
-						$p->validatedName = $this->_validateNamingConvention($variable->getAttribute("name"));						
-						$p->type = $this->_validateType($variable->getAttribute("type"));
                         $docNode = $variable->getElementsByTagName("documentation");
                         if($docNode && $docNode->length > 0)
                             $p->doc = $this->_normalizeDoc($docNode->item(0)->textContent) . "\n";				
-						$p->isOutputType = true;
 						$o->output = $p;
 						$this->discoverTypes($s, $p, true);
 					}
-				}
+				}				
 				
 			}			
 		}
@@ -227,7 +239,7 @@ class PHPGenerator {
             $classCode .= " /**\n * Stub objects for $service->name \n * Auto generated code \n * \n */\n";
             
 			//TODO: Move to one file per class.
-			foreach($classes as $c) {
+			foreach($classes as $c) {				
 				$classCode .= $this->_generateClass($c);
 			}
 			$classCode .= "?>";	
@@ -357,9 +369,7 @@ class PHPGenerator {
 
 	/**
 	 * Generates the PHP code for a WSDL message type class representation
-	 *
-	 * This gets a little bit fancy as the magic methods __get and __set in
-	 * the generated classes are used for properties that are not named
+	 *	 
 	 * according to PHP naming conventions (e.g., "MY-VARIABLE").
 	 * and could normally be retrieved by $myClass->{"MY-VARIABLE"}.  For
 	 * convenience, however, this will be available as $myClass->MYVARIABLE.
@@ -391,7 +401,16 @@ class PHPGenerator {
 		$nvpSerializeCode = "\t\t\$delim = '';\n";
 		$nvpDeserializeCode = "\n\tpublic function __construct(\$map = null, \$prefix='') {\n\t\tif(\$map != null) {\n";
         $mandatoryParams = array();
-
+        
+        // add members from WSDL's fault message to the class
+        if( $class->isOutputType && count($class->faults) > 0 ) {
+        	foreach( $class->faults as $fault ) {
+        		foreach($fault->members as $member) {  			
+        			$class->members[$member->name] = $member;
+        		}
+        	}
+        }
+        
 		foreach ($class->members as $property) {
 			$return .= "\t/**\n";
             if($property->doc != null)
@@ -407,30 +426,39 @@ class PHPGenerator {
 			. "\t */\n"
 			. "\t".'public $'.$property->validatedName . ";\n";
 				
-				
+
 			if(strcmp($property->maxOccurs, "unbounded") == 0 || $property->maxOccurs > 1) {
 				// handle collection type
 				$nvpSerializeCode .= "\t\t" . 'for($i=0; $i<count($this->'. $property->validatedName .');$i++) {'. "\n";
-				if($this->isComplexType($property->class)) {
+				//TODO: assuming there are no more than 10 elements for now
+				$nvpDeserializeCode .= "\t\t\t" . 'for($i=0; $i<10;$i++) {'. "\n";
+				if($this->isComplexType($property->class)) {		
 					$nvpSerializeCode .= "\t\t\t". '$newPrefix = $prefix . "' . $property->name . '($i).";' . "\n\t\t\t\$str .= ";
 					$nvpSerializeCode .=  "\$delim . call_user_func(array(\$this->".$property->validatedName . ", 'toNVPString'), \$newPrefix);\n";
+					
+					$nvpDeserializeCode .= "\t\t\t\t" . 'if( PPUtils::array_match_key($map, $prefix."'. $property->name. '($i)") ) {'. "\n";
+					$nvpDeserializeCode .= "\t\t\t\t\t" . '$newPrefix = $prefix."'. $property->name. '($i).";'."\n\t\t\t\t".'$this->'. $property->validatedName. '[$i] = new ' . $property->class . '($map, $newPrefix);'. "\n\t\t\t\t}\n";
 				} else {
+					//TODO: nvp deserialize for array of simple types
 					$nvpSerializeCode .= "\t\t\t". '$str .= $delim .  $prefix ."' . $property->name . '($i)=" .  urlencode($this->' . $property->validatedName . '[$i]);' . "\n";
+										
 				}
 				$nvpSerializeCode .= "\t\t }\n";
+				$nvpDeserializeCode .= "\t\t\t }\n";
 
 			} else {
                 if($property->minOccurs == 1) {
                     $mandatoryParams[] = $property->name;
                 }
 				$nvpSerializeCode .= "\t\tif( \$this->" . $property->validatedName . " != null ) {\n";
-				if($this->isComplexType($property->class)) {
+				if($this->isComplexType($property->class)) {		
 					// nested complex type
 					$nvpSerializeCode .= "\t\t\t\$newPrefix = \$prefix . '" . $property->name . ".';\n\t\t\t\$str .= ";
 					$nvpSerializeCode .=  "\$delim . call_user_func(array(\$this->".$property->validatedName . ", 'toNVPString'), \$newPrefix);\n";
 					$nvpDeserializeCode .= "\t\t\t". '$newPrefix = $prefix ."' . $property->name . '.";'. "\n";
 					$nvpDeserializeCode .= "\t\t\t\$this->" . $property->validatedName . ' = new ' . $property->class . '($map, $newPrefix);' . "\n";
 				} else {
+					
 					$nvpDeserializeCode .= "\t\t\t\$mapKeyName =  \$prefix . '" . $property->name. "';\n";
 					$nvpSerializeCode .= "\t\t\t\$str .= \$delim .  \$prefix . '" . $property->name ."=' . urlencode(\$this->".$property->validatedName .");\n";
 					$nvpDeserializeCode .= "\t\t\tif(\$map != null && array_key_exists(\$mapKeyName, \$map)) {\n\t\t\t\t";
