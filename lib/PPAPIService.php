@@ -41,7 +41,7 @@ class PPAPIService
 		} 
 		
 		// Add other headers 
-		$headers_arr[] = "X-PAYPAL-APPLICATION-ID: " . $conf->get('acct1.AppId');
+		$headers_arr[] = "X-PAYPAL-APPLICATION-ID: " . $apiCred->getApplicationId();
 		$headers_arr[] = "X-PAYPAL-REQUEST-DATA-FORMAT: "  . $conf->get('service.Binding');
 		$headers_arr[] = "X-PAYPAL-RESPONSE-DATA-FORMAT: "  . $conf->get('service.Binding');		
 		$headers_arr[] = "X-PAYPAL-DEVICE-IPADDRESS: 127.0.0.1";
