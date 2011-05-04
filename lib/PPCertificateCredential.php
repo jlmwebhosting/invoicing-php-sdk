@@ -5,30 +5,27 @@ require_once 'PPMissingCredentialException.php';
 
 class PPCertificateCredential extends IPPCredential{
 	
-	private $userName;
-	private $password;
 	private $certificatePath;
-	private $certificateKey;
-
-	public function __construct($userName, $password, $certPath, $appId){
-		$this->userName = $userName;
-		$this->password = $password;
+	
+	public function __construct($userName, $password, $certPath, $appId) {
+		parent::__construct($userName, $password, $appId);
 		$this->certificatePath = $certPath;
-		$this->applicationId = $appId;
 		$this->validate();
 	}
-	public function validate(){
+	
+	public function validate() {
+		
 		if ($this->userName == null || $this->userName == "") {
-			throw new PPMissingCredentialException("username can't be empty");
+			throw new PPMissingCredentialException("username cannot be empty");
 		}
 		if ($this->password == null || $this->password == "") {
-			throw new PPMissingCredentialException("password can't be empty");
+			throw new PPMissingCredentialException("password cannot be empty");
 		}		
 		if ($this->certificatePath == null || $this->certificatePath == "") {
-			throw new PPMissingCredentialException("certificate can't be empty");
+			throw new PPMissingCredentialException("certificate cannot be empty");
 		}
 		if ($this->applicationId == null || $this->applicationId == "") {
-			throw new PPMissingCredentialException("applicationId can't be empty");
+			throw new PPMissingCredentialException("applicationId cannot be empty");
 		}
 	}
 
@@ -40,9 +37,6 @@ class PPCertificateCredential extends IPPCredential{
 	}	
 	public function getCertificatePath(){
 		return $this->certificatePath;
-	}
-	public function getCertificateKey(){
-		return $this->certificateKey;
 	}
 	public function getApplicationId() {
 		return $this->applicationId;

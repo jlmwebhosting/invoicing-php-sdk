@@ -37,15 +37,15 @@ class PPAPIService
 			
 			$headers_arr[] = "X-PAYPAL-SECURITY-USERID:  " . $apiCred->getUserName();
 			$headers_arr[] = "X-PAYPAL-SECURITY-PASSWORD: " . $apiCred->getPassword();			
-			$connection->setSSLCert($apiCred->getCertificatePath(), $apiCred->getCertificateKey());
+			$connection->setSSLCert($apiCred->getCertificatePath());
 		} 
 		
 		// Add other headers 
 		$headers_arr[] = "X-PAYPAL-APPLICATION-ID: " . $apiCred->getApplicationId();
 		$headers_arr[] = "X-PAYPAL-REQUEST-DATA-FORMAT: "  . $conf->get('service.Binding');
 		$headers_arr[] = "X-PAYPAL-RESPONSE-DATA-FORMAT: "  . $conf->get('service.Binding');		
-		$headers_arr[] = "X-PAYPAL-DEVICE-IPADDRESS: 127.0.0.1";
-		//$headers_arr[] = "X-PAYPAL-REQUEST-SOURCE: " . SDK_VERSION;
+		$headers_arr[] = "X-PAYPAL-DEVICE-IPADDRESS: " . PPUtils::getLocalIPAddress();
+		$headers_arr[] = "X-PAYPAL-REQUEST-SOURCE: " . PPUtils::getRequestSource();
 		return $headers_arr;
 	}
 	

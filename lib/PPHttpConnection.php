@@ -1,6 +1,8 @@
 <?php
 
 require_once 'PPConnectionException.php';
+require_once 'PPConfigurationException.php';
+
 /**
  * A wrapper class based on the curl extension. 
  * Requires the PHP curl module to be enabled.
@@ -59,12 +61,10 @@ class PPHttpConnection
 	 * Set ssl parameters for certificate based client authentication
 	 * 
 	 * @param string $certPath - path to client certificate file (PEM formatted file)
-	 * @param string $certKey - password(plaintext) required to use the certificate
 	 */
-	public function setSSLCert($certPath, $certKey)
+	public function setSSLCert($certPath)
 	{				
-		$this->curlOpt[CURLOPT_SSLCERT] = realpath($certPath);		
-		$this->curlOpt[CURLOPT_SSLCERTPASSWD] = $certKey;
+		$this->curlOpt[CURLOPT_SSLCERT] = realpath($certPath);
 	}
 	
 	/**
@@ -164,7 +164,6 @@ class PPHttpConnection
 		}
 		if ( curl_errno($ch) ) {			
 			$ex = new PPConnectionException($url, curl_error($ch), curl_errno($ch));
-			var_dump(curl_error($ch));
 			curl_close($ch);
 			throw $ex;
 		}
