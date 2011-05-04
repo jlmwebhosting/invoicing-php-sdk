@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once("services/Invoice/InvoiceService.php");
+require_once 'services/Invoice/InvoiceService.php';
 
 
 class InvoiceServiceTest extends PHPUnit_Framework_TestCase {
@@ -35,10 +35,31 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase {
 		$invc = new InvoiceService();
 		$ret = $invc->CreateInvoice($req);
 		
-		var_dump($ret);
 		$this->assertNotNull($ret);
 		$this->assertNotNull($ret->invoiceID);
 		$this->assertEquals(0, count($ret->error));		
 	}
+	
+	/**
+	 * @test 
+	 */
+	public function checkCreateInvoiceUsingAlternateConstructor() {
+		
+		$env = new RequestEnvelope("en_US");
+		$invoice = new InvoiceType("jbui-us-business1@paypal.com", "jb-us-seller1@paypal.com",
+					"USD", "DueOnReceipt");
+		$invoiceItems = array(new InvoiceItemType("product1", 10, 1.5));
+		$invoice->items = $invoiceItems;
+				
+		$req = new CreateInvoiceRequest($env, $invoice);		
+		$invc = new InvoiceService();
+		$ret = $invc->CreateInvoice($req);
+		
+		$this->assertNotNull($ret);
+		$this->assertNotNull($ret->invoiceID);
+		$this->assertEquals(0, count($ret->error));		
+		
+	}
+	
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once("services/AdaptiveAccounts/AdaptiveAccountsService.php");
-require_once("services/AdaptiveAccounts/AdaptiveAccounts.php");
+require_once("services/Invoice/InvoiceService.php");
+
 
 class AAGeneratorTest extends PHPUnit_Framework_TestCase {
 
@@ -10,11 +10,11 @@ class AAGeneratorTest extends PHPUnit_Framework_TestCase {
 	 */				
 	public function checkAPIWrapperClass() {
 		
-		$className = "AdaptiveAccountsService";
+		$className = "InvoiceService";
 		$this->assertClassHasAttribute("serviceName", $className);
 
-		$aa = new AdaptiveAccountsService();	
-		$this->assertEquals($aa->getServiceName(), "AdaptiveAccounts");
+		$aa = new InvoiceService();	
+		$this->assertEquals($aa->getServiceName(), "Invoice");
 	}
 
 	/**
@@ -22,19 +22,28 @@ class AAGeneratorTest extends PHPUnit_Framework_TestCase {
 	 */				
 	public function checkCreateAccountStubs() {
 		
-		$className = "CreateAccountRequest";
-		$createAccountReq = new $className();
-		
-		$attribs = array("accountType", "name", "dateOfBirth", "address", "contactPhoneNumber",
-				"homePhoneNumber", "mobilePhoneNumber", "currencyCode", "citizenshipCountryCode",
-				"preferredLanguageCode", "notificationURL", "emailAddress", "registrationType",
-				"createAccountWebOptions", "suppressWelcomeEmail", "performExtraVettingOnThisAccount",
-				"partnerField1", "partnerField2", "partnerField3", "partnerField4", "partnerField5",
-				"businessInfo");
-		
+		$className = "CreateAndSendInvoiceRequest";		
+		$createAccountReq = new $className();		
+		$attribs = array('requestEnvelope', 'invoice');
 		foreach($attribs as $attrib) {
 			$this->assertClassHasAttribute($attrib, $className);	
-		}		 
+		}
+
+		$className = "CreateAndSendInvoiceResponse";		
+		$createAccountReq = new $className();		
+		$attribs = array('responseEnvelope', 'invoiceID', 
+						'invoiceNumber', 'error');
+		foreach($attribs as $attrib) {
+			$this->assertClassHasAttribute($attrib, $className);	
+		}		 		
+		
+		$className = "InvoiceItemType";		
+		$createAccountReq = new $className();		
+		$attribs = array('name', 'description', 'date', 'quantity', 'unitPrice',
+						'taxName', 'taxRate');
+		foreach($attribs as $attrib) {
+			$this->assertClassHasAttribute($attrib, $className);	
+		}		
 	}
 	
 	/**
@@ -42,10 +51,10 @@ class AAGeneratorTest extends PHPUnit_Framework_TestCase {
 	 * Test methods on the service stub
 	 */
 	public function checkOperationWrapperFunction() {
-		$className = "AdaptiveAccountsService";
+		$className = "InvoiceService";
 		
 		$reflector = new ReflectionClass($className);
-		$m = $reflector->getMethod("CreateAccount");
+		$m = $reflector->getMethod("CreateAndSendInvoice");
 		$this->assertNotNull($m);		
 	}
 	

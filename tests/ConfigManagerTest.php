@@ -11,7 +11,7 @@ class PPConfigManagerTest extends PHPUnit_FrameWork_TestCase{
 	function getSingleValue() {
 		$conf = PPConfigManager::getInstance();
 		$result = $conf->get("service.EndPoint");
-		$this->assertEquals($result,"https://svcs.sandbox.paypal.com/");
+		$this->assertEquals($result,"https://10.15.24.158:10630/");
 	}
 	
 	/**
@@ -20,7 +20,7 @@ class PPConfigManagerTest extends PHPUnit_FrameWork_TestCase{
 	function getMultipleValues() {
 		$conf = PPConfigManager::getInstance();
 		$result = $conf->get("acct");
-		$this->assertEquals(sizeof($result), 8);
+		$this->assertEquals(sizeof($result), 10);
 	}
 
 	/**
@@ -28,7 +28,7 @@ class PPConfigManagerTest extends PHPUnit_FrameWork_TestCase{
 	 */		
 	function getIniPrefix() {
 		$conf = PPConfigManager::getInstance();
-		$result = $conf->getIniPrefix("platfo_1255077030_biz_api1.gmail.com");
+		$result = $conf->getIniPrefix("jb-us-seller2_api1.paypal.com");
 		$this->assertEquals($result,"acct1");
 	}
 
