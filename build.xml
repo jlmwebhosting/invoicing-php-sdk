@@ -29,10 +29,10 @@
 	
 	<mkdir dir="${env.TMP}/gen"/>
 	<antcall target="generate">
-		<param name="wsdlPath" value="AdaptiveAccounts.wsdl"/>
+		<param name="wsdlPath" value="Invoice.wsdl"/>
 		<param name="outputDir" value="${env.TMP}/gen"/>
 	</antcall>
-	<copy todir="lib/services/AdaptiveAccounts">
+	<copy todir="lib/services/Invoice">
 		<fileset dir="${env.TMP}/gen" />
 	</copy>			
 	<delete dir="${env.TMP}/gen"/>

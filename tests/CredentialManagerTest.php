@@ -9,7 +9,7 @@ class PPCredentialManagerTest extends PHPUnit_FrameWork_TestCase {
 	 */			
 	function checkCredentialObjectNotEmpty() {
 		$credMgr = PPCredentialManager::getInstance();
-		$IPPCredential = $credMgr->getCredentialObject('jb-us-seller2_api1.paypal.com');
+		$IPPCredential = $credMgr->getCredentialObject('jb-us-seller1_api1.paypal.com');
 		$this->assertNotNull($IPPCredential);
 	}
 	

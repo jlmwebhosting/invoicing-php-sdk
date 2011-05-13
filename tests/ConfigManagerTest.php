@@ -11,7 +11,7 @@ class PPConfigManagerTest extends PHPUnit_FrameWork_TestCase{
 	function getSingleValue() {
 		$conf = PPConfigManager::getInstance();
 		$result = $conf->get("service.EndPoint");
-		$this->assertEquals($result,"https://10.15.24.158:10630/");
+		$this->assertEquals($result,"https://stage2sc5376.sc4.paypal.com:10630/");
 	}
 	
 	/**
@@ -28,7 +28,7 @@ class PPConfigManagerTest extends PHPUnit_FrameWork_TestCase{
 	 */		
 	function getIniPrefix() {
 		$conf = PPConfigManager::getInstance();
-		$result = $conf->getIniPrefix("jb-us-seller2_api1.paypal.com");
+		$result = $conf->getIniPrefix("jb-us-seller1_api1.paypal.com");
 		$this->assertEquals($result,"acct1");
 	}
 
