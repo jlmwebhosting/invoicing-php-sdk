@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once 'services/Invoice/InvoiceService.php';
+require_once("services/Invoice/InvoiceService.php");
 
 
 class InvoiceServiceTest extends PHPUnit_Framework_TestCase {
@@ -21,10 +21,8 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase {
 		
 		$invo = new InvoiceType();
 		$invo->currencyCode = 'USD';
-		$invo->dueDate = "1968-01-01";
-		$invo->invoiceDate = "1968-01-01";
-		$invo->merchantEmail = "jbui-us-business1@paypal.com";
-		$invo->payerEmail = "jb-us-seller1@paypal.com";
+		$invo->merchantEmail = "jb-us-seller1@paypal.com";
+		$invo->payerEmail = "jbui-us-personal1@paypal.com";
 		$invo->items = array($item);
 		$invo->paymentTerms = "DueOnReceipt";
 
@@ -33,33 +31,11 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase {
 		$req->requestEnvelope = $env;
 		
 		$invc = new InvoiceService();
-		$ret = $invc->CreateInvoice($req);
-		
+		$ret = $invc->CreateInvoice($req);		
+
 		$this->assertNotNull($ret);
 		$this->assertNotNull($ret->invoiceID);
 		$this->assertEquals(0, count($ret->error));		
 	}
-	
-	/**
-	 * @test 
-	 */
-	public function checkCreateInvoiceUsingAlternateConstructor() {
-		
-		$env = new RequestEnvelope("en_US");
-		$invoice = new InvoiceType("jbui-us-business1@paypal.com", "jb-us-seller1@paypal.com",
-					"USD", "DueOnReceipt");
-		$invoiceItems = array(new InvoiceItemType("product1", 10, 1.5));
-		$invoice->items = $invoiceItems;
-				
-		$req = new CreateInvoiceRequest($env, $invoice);		
-		$invc = new InvoiceService();
-		$ret = $invc->CreateInvoice($req);
-		
-		$this->assertNotNull($ret);
-		$this->assertNotNull($ret->invoiceID);
-		$this->assertEquals(0, count($ret->error));		
-		
-	}
-	
 }
 ?>

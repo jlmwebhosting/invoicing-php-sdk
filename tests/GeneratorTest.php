@@ -20,7 +20,7 @@ class AAGeneratorTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @test
 	 */				
-	public function checkCreateAccountStubs() {
+	public function checkCreateAndSendInvoiceStubs() {
 		
 		$className = "CreateAndSendInvoiceRequest";		
 		$createAccountReq = new $className();		
