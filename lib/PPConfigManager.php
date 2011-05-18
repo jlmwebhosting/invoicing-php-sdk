@@ -26,7 +26,7 @@ class PPConfigManager {
 	}
 
 	//used to load the file
-	private function load($fileName = "config/sdk_config.ini" ) {		
+	private function load($fileName = "../config/sdk_config.ini" ) {		
 		
 		$this->config = @parse_ini_file($fileName);
 		if($this->config == NULL || count($this->config) == 0) {			

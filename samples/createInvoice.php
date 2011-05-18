@@ -1,7 +1,7 @@
 <?php
-$path = './lib';
+$path = '../lib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-require_once('lib/services/Invoice/InvoiceService.php');
+require_once('services/Invoice/InvoiceService.php');
 require_once('PPLoggingManager.php');
 
 $logger = new PPLoggingManager('createInvoiceTest');
@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$createInvoiceRequest = new CreateInvoiceRequest($requestEnvelope, $invoice);
 	$logger->error("created CreateInvoiceRequest Object");
 	$invoice_service = new InvoiceService();
-	$createInvoiceResponse = $invoice_service->CreateInvoice($createInvoiceRequest, 'jb-us-seller2_api1.paypal.com');
+	$createInvoiceResponse = $invoice_service->CreateInvoice($createInvoiceRequest, 'jb-us-seller1_api1.paypal.com');
 	$logger->error("Received CreateInvoiceResponse:");
 	var_dump($createInvoiceResponse);
 } else {
