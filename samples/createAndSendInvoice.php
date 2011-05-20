@@ -1,7 +1,7 @@
 <?php
-$path = './lib';
+$path = '../lib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-require_once('lib/services/Invoice/InvoiceService.php');
+require_once('services/Invoice/InvoiceService.php');
 require_once('PPLoggingManager.php');
 
 $logger = new PPLoggingManager('createInvoiceTest');
@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$createAndSendInvoiceRequest = new CreateAndSendInvoiceRequest($requestEnvelope, $invoice);
 	$logger->error("created CreateAndSendInvoiceRequest Object");
 	$invoice_service = new InvoiceService();
-	$createInvoiceResponse = $invoice_service->CreateAndSendInvoice($createAndSendInvoiceRequest, 'jb-us-seller2_api1.paypal.com');
+	$createInvoiceResponse = $invoice_service->CreateAndSendInvoice($createAndSendInvoiceRequest, 'jb-us-seller1_api1.paypal.com');
 	$logger->error("Received CreateAndSendInvoiceResponse:");
 	var_dump($createInvoiceResponse);
 		
@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form method="POST">
 	<div class="params">
 	<div class="param_name">Merchant Email</div>
-	<div class="param_value"><input type="text" name="merchantEmail" value="jb-us-seller2@paypal.com" size="50" maxlength="260"/></div>
+	<div class="param_value"><input type="text" name="merchantEmail" value="jb-us-seller1@paypal.com" size="50" maxlength="260"/></div>
 	<div class="param_name">Payer Email</div>
 	<div class="param_value"><input type="text" name="payerEmail" value="sender@yahoo.com" size="50" maxlength="260"/></div>
 	<div class="param_name">Item Name1</div>
