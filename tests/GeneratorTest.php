@@ -3,7 +3,7 @@ require_once 'PHPUnit/Framework.php';
 require_once("services/Invoice/InvoiceService.php");
 
 
-class AAGeneratorTest extends PHPUnit_Framework_TestCase {
+class InvoiceGeneratorTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @test

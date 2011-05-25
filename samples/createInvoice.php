@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form method="POST">
 	<div class="params">
 	<div class="param_name">Merchant Email</div>
-	<div class="param_value"><input type="text" name="merchantEmail" value="jb-us-seller2@paypal.com" size="50" maxlength="260"/></div>
+	<div class="param_value"><input type="text" name="merchantEmail" value="jb-us-seller1@paypal.com" size="50" maxlength="260"/></div>
 	<div class="param_name">Payer Email</div>
 	<div class="param_value"><input type="text" name="payerEmail" value="sender@yahoo.com" size="50" maxlength="260"/></div>
 	<div class="param_name">Item Name1</div>
