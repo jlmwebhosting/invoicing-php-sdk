@@ -2,7 +2,7 @@
 class PPUtils {
 	
 	const SDK_VERSION = "0.6";
-	const SDK_NAME = "PHP Invoice SDK";
+	const SDK_NAME = "PHP Invoice SDK ";
 	
 	/**
 	 * 

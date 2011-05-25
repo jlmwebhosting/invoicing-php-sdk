@@ -40,7 +40,7 @@ class PPObjectTransformer {
 
 	//TODO: permformance test on reflection based & static marshalling routines
 	//TODO: Break down into functions to enhance testability
-	//TODO: Add loads of test cases
+	
 	public function toStringRef($object, $prefix="") {
 		$ret = "";
 		$reflect = new ReflectionClass($object);

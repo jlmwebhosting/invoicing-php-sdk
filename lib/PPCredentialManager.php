@@ -3,7 +3,7 @@ require_once 'IPPCredential.php';
 require_once 'PPConfigManager.php';
 require_once 'PPSignatureCredential.php';
 require_once 'PPCertificateCredential.php';
-require_once 'PPInvalidCredentialException.php';
+require_once 'exceptions/PPInvalidCredentialException.php';
 
 class PPCredentialManager
 {
@@ -85,7 +85,7 @@ class PPCredentialManager
 	/*
 	 * Obtain Credential Object based on UserId provided.
 	 */
-	public function getCredentialObject($userId){
+	public function getCredentialObject($userId = null){
 		
 		if($userId == null)
 			$credObj = $this->credentialHashmap[$this->defaultAccountName];

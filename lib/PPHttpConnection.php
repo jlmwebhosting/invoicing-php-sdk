@@ -1,8 +1,8 @@
 <?php
 
-require_once 'PPConnectionException.php';
-require_once 'PPConfigurationException.php';
-
+require_once 'exceptions/PPConnectionException.php';
+require_once 'exceptions/PPConfigurationException.php';
+require_once 'PPLoggingManager.php';
 /**
  * A wrapper class based on the curl extension. 
  * Requires the PHP curl module to be enabled.
@@ -55,6 +55,7 @@ class PPHttpConnection
 		}
 		$this->curlOpt = self::$DEFAULT_CURL_OPTS;
 		$this->logger = new PPLoggingManager(__CLASS__);
+		
 	}
 	
 	/**
@@ -85,8 +86,8 @@ class PPHttpConnection
 	{
 		$urlParts = parse_url($proxy);
 		if($urlParts == false || !array_key_exists("host", $urlParts))
-			throw new PPConfigurationException("Invalid proxy configuration '$proxy'");
-			
+			throw new PPConfigurationException("Invalid proxy configuration ".$proxy);
+		
 		$this->curlOpt[CURLOPT_PROXY] = $urlParts["host"];
 		if(isset($urlParts["port"]))
 			$this->curlOpt[CURLOPT_PROXY] .=  ":" . $urlParts["port"];											
@@ -115,7 +116,7 @@ class PPHttpConnection
 	 */
 	public function setHttpRetry($retry)
 	{
-		$this->$retry = $retry;
+		$this->retry = $retry;
 	}
 
 	/**
@@ -154,13 +155,17 @@ class PPHttpConnection
 		$result = curl_exec($ch);
 		
 		$httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if(array_key_exists($httpStatus, self::$retryCodes) && isset($this->retry)) {			
+		$retries = 0;
+		if(in_array($httpStatus, self::$retryCodes) && isset($this->retry)) {			
 			$this->logger->info("Got $httpStatus response from server. Retrying");
-			$retries = 0;
+			
 			do 	{				
 				$result = curl_exec($ch);
-				$httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);				
-			} while ( ++$retries < $this->retry );
+				$httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);	
+										
+			} while (in_array($httpStatus, self::$retryCodes) && ++$retries < $this->retry );
+			
+			
 		}
 		if ( curl_errno($ch) ) {			
 			$ex = new PPConnectionException($url, curl_error($ch), curl_errno($ch));
@@ -169,6 +174,11 @@ class PPHttpConnection
 		}
 
 		curl_close($ch);
+		
+		if(in_array($httpStatus, self::$retryCodes))
+			{
+				throw new PPConnectionException($url ,"Retried ".$retries." times, Http Response code ".$httpStatus);
+			}
 		return $result;
 	}
 
