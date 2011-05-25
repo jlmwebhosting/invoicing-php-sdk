@@ -3,6 +3,7 @@ require_once 'PPCredentialManager.php';
 require_once 'PPConnectionManager.php';
 require_once 'PPObjectTransformer.php';
 require_once 'PPLoggingManager.php';
+require_once 'PPUtils.php';
 
 class PPAPIService
 {
@@ -64,14 +65,7 @@ class PPAPIService
 		
 		//TODO: logic for checking if '/'	is set properly	
 		$url = $this->endpoint . $this->serviceName . '/' . $apiMethod;
-		
-		//XXX: The is_object testing is valid only during testing
-		// In the final version, $params will always be an object
-
-		if(is_object($params)) {
-			$params = $this->marshall($params);
-		}
-		
+		$params = $this->marshall($params);
 		$this->logger->info("Request: $params");
 		$response = $connection->execute($url, $params, $headers);
 		$this->logger->info("Response: $response");
