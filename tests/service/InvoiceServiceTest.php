@@ -107,7 +107,7 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
 		$invo->items = array($item);
 		$invo->paymentTerms = "DueOnReceipt";
 
-		$req = new CreateInvoiceRequest();
+		$req = new CreateAndSendInvoiceRequest();
 		$req->invoice = $invo;
 		$req->requestEnvelope = $env;
 		
