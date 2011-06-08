@@ -13,7 +13,7 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
      * @var InvoiceService
      */
     protected $object;
-
+public static $invoicID;
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -59,28 +59,28 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
 		
 		$invc = new InvoiceService();
 		$ret = $invc->CreateInvoice($req);		
-
+		self::$invoicID = $ret->invoiceID;
 		$this->assertNotNull($ret);
 		$this->assertNotNull($ret->invoiceID);
 		$this->assertEquals(0, count($ret->error));		
+		
     }
 
     /**
      * @test
      */
 	public function checkSendInvoice() {
+	echo self::$invoicID;
 		$env = new RequestEnvelope();
 		$env->errorLanguage = "en_US";
 		$env->detailLevel = "ReturnAll";
-		
-	
 		$req = new SendInvoiceRequest();
-		$req->invoiceID = "INV2-ZQAG-PCS2-RPJS-KP2N";
+		$req->invoiceID = self::$invoicID;
 		$req->requestEnvelope = $env;
-		
 		$invc = new InvoiceService();
 		$ret = $invc->SendInvoice($req);		
 		$this->assertNotNull($ret);
+		var_dump($req);
 		$this->assertNotNull($ret->invoiceID);
 		$this->assertEquals(0, count($ret->error));		
 	}
