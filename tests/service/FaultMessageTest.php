@@ -59,7 +59,7 @@ protected $map;
     public function testFaultMessage()
     {
     	$ret = $this->object = new FaultMessage($this->map);
-    	//var_dump($ret);
+
     	$this->assertEquals("Success", $this->object->responseEnvelope->ack);
 		$this->assertEquals("2011-05-29T23%3A58%3A46.879-07%3A00",$this->object->responseEnvelope->timestamp);
 		$this->assertEquals("2eba4859262a9", $this->object->responseEnvelope->correlationId);

@@ -6,11 +6,12 @@ require_once('PPLoggingManager.php');
 
 $logger = new PPLoggingManager('createInvoiceTest');
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-	// send request
-	$invoice = new InvoiceType($_POST['merchantEmail'], $_POST['payerEmail'], $_POST['currencyCode'],$_POST['paymentTerms']);
+	// send request	
 	$item1 = new InvoiceItemType($_POST['item_name1'], $_POST['item_quantity1'], $_POST['item_unitPrice1']);
 	$item2 = new InvoiceItemType($_POST['item_name2'], $_POST['item_quantity2'], $_POST['item_unitPrice2']);
-	$invoice->items = array($item1, $item2);
+	$items = array($item1, $item2);
+	$invoice = new InvoiceType($_POST['merchantEmail'], $_POST['payerEmail'], $items, $_POST['currencyCode'], $_POST['paymentTerms']);
+
 	$requestEnvelope = new RequestEnvelope();
 	$requestEnvelope->errorLanguage = "en_US";
 	$createAndSendInvoiceRequest = new CreateAndSendInvoiceRequest($requestEnvelope, $invoice);

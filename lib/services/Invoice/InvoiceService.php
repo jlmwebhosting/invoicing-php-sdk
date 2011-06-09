@@ -14,9 +14,6 @@ class InvoiceService extends PPBaseService {
 
 	/**
 	 * Service Call: CreateInvoice
-
-	 *  
-
 	 * @param CreateInvoiceRequest CreateInvoiceRequest
 	 * @return CreateInvoiceResponse
 	 * @throws APIException
@@ -28,9 +25,6 @@ class InvoiceService extends PPBaseService {
 
 	/**
 	 * Service Call: SendInvoice
-
-	 *  
-
 	 * @param SendInvoiceRequest SendInvoiceRequest
 	 * @return SendInvoiceResponse
 	 * @throws APIException
@@ -42,9 +36,6 @@ class InvoiceService extends PPBaseService {
 
 	/**
 	 * Service Call: CreateAndSendInvoice
-
-	 *  
-
 	 * @param CreateAndSendInvoiceRequest CreateAndSendInvoiceRequest
 	 * @return CreateAndSendInvoiceResponse
 	 * @throws APIException

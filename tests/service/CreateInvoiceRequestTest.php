@@ -37,11 +37,13 @@ class CreateInvoiceRequestTest extends PHPUnit_Framework_TestCase
     public function testToNVPString()
     {
        $requestEnvelope = new RequestEnvelope('en_US');
-        $invoice = new InvoiceType('jb-us-seller1@paypal.com', 'jbui-us-personal1@paypal.com', 'USD', 'DUEONRECEIPT');
+
        $item1 = new InvoiceItemType('item1', '3', '5');
        $item2 = new InvoiceItemType('Iitem2', '3', '5');
         
-           $invoice->items = array($item1, $item2);
+        $items = array($item1, $item2);
+        $invoice = new InvoiceType('jb-us-seller1@paypal.com', 'jbui-us-personal1@paypal.com', $items, 'USD', 'DUEONRECEIPT');
+
         $this->object = new CreateInvoiceRequest($requestEnvelope , $invoice);
         $ret = $this->object->toNVPString();
         $this->assertEquals('requestEnvelope.errorLanguage=en_US&invoice.merchantEmail=jb-us-seller1%40paypal.com&invoice.payerEmail=jbui-us-personal1%40paypal.com&invoice.items(0).name=item1&invoice.items(0).quantity=3&invoice.items(0).unitPrice=5&invoice.items(1).name=Iitem2&invoice.items(1).quantity=3&invoice.items(1).unitPrice=5&invoice.currencyCode=USD&invoice.paymentTerms=DUEONRECEIPT', $ret);

@@ -70,7 +70,7 @@ public static $invoicID;
      * @test
      */
 	public function checkSendInvoice() {
-	echo self::$invoicID;
+
 		$env = new RequestEnvelope();
 		$env->errorLanguage = "en_US";
 		$env->detailLevel = "ReturnAll";
@@ -80,7 +80,7 @@ public static $invoicID;
 		$invc = new InvoiceService();
 		$ret = $invc->SendInvoice($req);		
 		$this->assertNotNull($ret);
-		var_dump($req);
+
 		$this->assertNotNull($ret->invoiceID);
 		$this->assertEquals(0, count($ret->error));		
 	}
