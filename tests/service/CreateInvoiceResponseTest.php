@@ -34,7 +34,8 @@ class CreateInvoiceResponseTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testDecode()
 	{
-		$ret = $this->object = new CreateInvoiceResponse($this->map);
+		$ret = $this->object = new CreateInvoiceResponse();
+		$this->object->init($this->map);
 
 		$this->assertEquals('INV2-GEKM-LTFQ-7NWN-9YDL' , $ret->invoiceID);
 		$this->assertNull($ret->error);

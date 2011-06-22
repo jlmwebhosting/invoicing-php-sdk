@@ -42,7 +42,8 @@ class ResponseEnvelopeTest extends PHPUnit_Framework_TestCase
 'responseEnvelope.build' =>  '1917403',
 );
 
-		$this->object = new ResponseEnvelope($this->map ,'responseEnvelope.' );
+		$this->object = new ResponseEnvelope();
+		$this->object->init($this->map ,'responseEnvelope.'); 
 
 		$this->assertEquals('Success', $this->object->ack);
 		$this->assertEquals('1917403', $this->object->build);

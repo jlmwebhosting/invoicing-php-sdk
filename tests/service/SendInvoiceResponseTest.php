@@ -42,7 +42,8 @@ class SendInvoiceResponseTest extends PHPUnit_Framework_TestCase
 'responseEnvelope.build' =>  '1917403',
 'invoiceID' =>  'INV2-GEKM-LTFQ-7NWN-9YDL');
 
-		$ret = $this->object = new SendInvoiceResponse($this->map);
+		$ret = $this->object = new SendInvoiceResponse();
+		$this->object->init($this->map);
 
 		$this->assertEquals('INV2-GEKM-LTFQ-7NWN-9YDL' , $ret->invoiceID);
 		$this->assertNull($ret->error);

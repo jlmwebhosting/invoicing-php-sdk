@@ -47,8 +47,9 @@ class ErrorDataTest extends PHPUnit_Framework_TestCase
      */
 	public function testErrorData()
 	{
-		$this->object = new ErrorData($this->map);
-		
+		$this->object = new ErrorData();
+		$this->object->init($this->map);
+
 		$this->assertEquals("520003", $this->object->errorId);
 		$this->assertEquals("Platform",$this->object->domain);
 		$this->assertEquals("Application",$this->object->subdomain);
