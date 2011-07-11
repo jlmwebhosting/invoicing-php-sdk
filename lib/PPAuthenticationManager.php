@@ -49,8 +49,8 @@ class PPAuthenticationManager
 		$key = 	$apiCred->getUserName();
 		$secret = 	$apiCred->getPassword();
 		$auth = new AuthSignature();
-		$response = $auth->GenSign($key,$secret,$accessToken,$tokenSecret,'POST',$endpoint);
-		$authstring = "token=".$token.",signature=".$response['oauth_signature'].",timestamp=".$response['oauth_timestamp'];
+		$response = $auth->genSign($key,$secret,$accessToken,$tokenSecret,'POST',$endpoint);
+		$authString = "token=".$accessToken.",signature=".$response['oauth_signature'].",timestamp=".$response['oauth_timestamp'];
 
 		return $authString;
 	}

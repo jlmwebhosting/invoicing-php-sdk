@@ -5,7 +5,7 @@ require_once("AuthUtil.php");
 class AuthSignature
 {
 
-	public function GenSign($key,$secret,$token,$tokenSecret,$httpMethod,$endpoint)
+	public function genSign($key,$secret,$token,$tokenSecret,$httpMethod,$endpoint)
 	{
 
 
