@@ -11,10 +11,29 @@ class InvoiceService extends PPBaseService {
 	public function __construct() {
 		parent::__construct('Invoice');
 	}
+/*
+ * Setters and getters for Third party authentication (Permission Services)
+ */
+	public $accessToken;
+	public $tokenSecret;
+	public function getAccessToken() {
+		return $this->accessToken;
+	}
 
+	public function setAccessToken($accessToken) {
+		$this->accessToken = $accessToken;
+	}
+
+	public function getTokenSecret() {
+		return $this->tokenSecret;
+	}
+
+	public function setTokenSecret($tokenSecret) {
+		$this->tokenSecret = $tokenSecret;
+	}
 	/**
 	 * Service Call: CreateInvoice
-	 * @param CreateInvoiceRequest CreateInvoiceRequest
+	 * @param CreateInvoiceRequest $createInvoiceRequest
 	 * @return CreateInvoiceResponse
 	 * @throws APIException
 	 */
@@ -25,7 +44,7 @@ class InvoiceService extends PPBaseService {
 
 	/**
 	 * Service Call: SendInvoice
-	 * @param SendInvoiceRequest SendInvoiceRequest
+	 * @param SendInvoiceRequest $sendInvoiceRequest
 	 * @return SendInvoiceResponse
 	 * @throws APIException
 	 */
@@ -36,7 +55,7 @@ class InvoiceService extends PPBaseService {
 
 	/**
 	 * Service Call: CreateAndSendInvoice
-	 * @param CreateAndSendInvoiceRequest CreateAndSendInvoiceRequest
+	 * @param CreateAndSendInvoiceRequest $createAndSendInvoiceRequest
 	 * @return CreateAndSendInvoiceResponse
 	 * @throws APIException
 	 */
