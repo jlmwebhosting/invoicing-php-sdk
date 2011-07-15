@@ -1,4 +1,3 @@
-
 <?php //vim: foldmethod=marker
 
 class MockOAuthDataStore extends OAuthDataStore {/*{{{*/

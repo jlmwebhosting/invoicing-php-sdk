@@ -1,14 +1,12 @@
 <?php
+
 $path = '../lib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once('services/Invoice/InvoiceService.php');
 require_once('PPLoggingManager.php');
 session_start();
 $logger = new PPLoggingManager('createInvoiceTest');
-$currentFile = $_SERVER["SCRIPT_NAME"];
-$parts = Explode('/', $currentFile);
-$currentFile = $parts[count($parts) - 1];
-$_SESSION['curFile']=$currentFile;
+
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// send request
 
@@ -76,8 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 below fields are required only if third party permissioning is used<br>
 ---------------------------------------------------------------------------------------------<br>
 Using Permission Credentials <br>
-<a href="Permissions/RequestPermissions.php">(Get AccessToken and
-TokenSecret here)</a><br />
+<a href="RequestPermissions.php">(Get AccessToken and TokenSecret here)</a><br />
 <div class="param_name">Access Token</div>
 
 <div class="param_value"><input type="text" name="accessToken"
@@ -87,7 +84,8 @@ TokenSecret here)</a><br />
 <div class="param_value"><input type="text" name="tokenSecret" id="auth"
 	value="<?php if(isset($_SESSION['permTokenSecret'])) echo $_SESSION['permTokenSecret']?>"
 	size="50" maxlength="260" /></div>
-<input type="submit" name="CreateBtn" value="CreateInvoice" /></div>
+<input type="submit" name="CreateBtn" value="CreateInvoice" /> 
+</div>
 </form>
 </body>
 </html>

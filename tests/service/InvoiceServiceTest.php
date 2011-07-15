@@ -49,7 +49,7 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
 		
 		$invo = new InvoiceType();
 		$invo->currencyCode = 'USD';
-		$invo->merchantEmail = "jb-us-seller1@paypal.com";
+		$invo->merchantEmail = "jb-us-seller@paypal.com";
 		$invo->payerEmail = "jbui-us-personal1@paypal.com";
 		$invo->items = array($item);
 		$invo->paymentTerms = "DueOnReceipt";
@@ -95,8 +95,8 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
 		$req->requestEnvelope = $env;
 		
 		$invc = new InvoiceService();
-		$invc->setAccessToken("ih5acEwTvGxOGpvd4oSymRbHLvP4CccdqEvpEZmLO8uIk2C036.qqA");
-		$invc->setTokenSecret("i2mh1RUEMEHW2RfmawBPWeBfVK8");
+		$invc->setAccessToken("iHJRdaLaHlROHt6OxkH29I53ZvCHdgEhBdMWxu4OyoB9AaKkS5YlWw");
+		$invc->setTokenSecret("3M5zkwsU-F0OKhvsuSJmITYJueg");
 		$ret = $invc->CreateInvoice($req);		
 		$this->assertNotNull($ret);
 		$this->assertNotNull($ret->invoiceID);
@@ -140,7 +140,7 @@ class InvoiceServiceTest extends PHPUnit_Framework_TestCase
 		
 		$invo = new InvoiceType();
 		$invo->currencyCode = 'USD';
-		$invo->merchantEmail = "jb-us-seller1@paypal.com";
+		$invo->merchantEmail = "jb-us-seller@paypal.com";
 		$invo->payerEmail = "jbui-us-personal1@paypal.com";
 		$invo->items = array($item);
 		$invo->paymentTerms = "DueOnReceipt";
