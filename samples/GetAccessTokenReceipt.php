@@ -6,7 +6,7 @@ GetAccessTokenReceipt.php
 
 Called by GetAccessToken.php
 ********************************************/
-$path = '..\..\lib';
+$path = './lib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once('services/PermissionsService.php');	
 session_start();
@@ -65,7 +65,7 @@ throw new Exception('Error occurred in GetAccessTokenReceipt method');
    		 ?>
    		 <table width="600" align="center">
 	<tr>
-		<td><a href='../<?php echo $_SESSION['curFile'] ?>'><b>* use the obtained AccessToken in Invoicing APIs </b></a>
+		<td><a href='createInvoice.php?token=<?php echo $_SESSION['permToken'] ?>&tokenSecret=<?php echo $_SESSION['permTokenSecret'] ?>'><b>* use the obtained AccessToken in Invoicing APIs </b></a>
 		
 		</td>
 	</tr>

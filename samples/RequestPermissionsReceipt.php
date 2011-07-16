@@ -6,7 +6,7 @@ session_start();
 
  Called by RequestPermissions.php
  ********************************************/
-$path = '..\..\lib';
+$path = './lib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once('services/PermissionsService.php');
 
