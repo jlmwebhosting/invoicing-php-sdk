@@ -4,7 +4,9 @@ PayPal PHP Invoice API sample scripts using the sdk
 Prerequisites
 -------------
 
- * Invoice API PHP SDK (see the README.md in the parent directory for instructions on how to install it - you essentially need to copy the lib and config directories into your applications path). 
+ * Invoice API PHP SDK (see the README.md in the parent directory for instructions on how to install it.
+
+Note: you'll need to copy the lib and config directories into your applications path). 
 
 Sample php scripts
 -------------
